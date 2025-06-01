@@ -1,27 +1,30 @@
 import { useState } from "react";
-import { signIn, getSession } from "next-auth/react";
+import { signIn, getSession, getProviders } from "next-auth/react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
-import Link from "next/link";
-import Button from "../../components/ui/Button";
+import Image from "next/image";
 import {
   EyeIcon,
   EyeSlashIcon,
-  UserIcon,
   LockClosedIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 
-const SignIn = () => {
+interface SignInProps {
+  providers: any;
+}
+
+const SignIn = ({ providers }: SignInProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
     setError("");
 
     try {
@@ -37,129 +40,88 @@ const SignIn = () => {
         router.push("/dashboard");
       }
     } catch (error) {
-      setError("Une erreur s'est produite. Veuillez réessayer.");
+      setError("Une erreur est survenue");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      {/* Left side - Branding */}
+      <div className="lg:flex-1 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 flex flex-col justify-center items-center p-8 text-white relative overflow-hidden">
         {/* Background Pattern */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-black/10"></div>
-          <div className="absolute top-0 left-0 w-full h-full">
-            <div className="absolute top-1/4 -left-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-            <div className="absolute top-3/4 right-1/4 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
-            <div className="absolute bottom-1/4 left-1/3 w-20 h-20 bg-white/10 rounded-full blur-lg"></div>
-          </div>
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-20 w-32 h-32 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-32 right-16 w-48 h-48 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-white rounded-full blur-2xl"></div>
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center px-12">
-          <div className="space-y-8">
-            {/* Logo */}
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30">
-                <span className="text-white font-bold text-xl">IB</span>
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-white">IBTIKAR</h1>
-                <p className="text-blue-100 text-sm">
-                  Reference Management System
-                </p>
-              </div>
+        <div className="relative z-10 text-center max-w-md">
+          {/* Logo */}
+          <div className="mb-8 flex justify-center">
+            <div className="relative w-24 h-24 bg-white rounded-2xl p-4 shadow-2xl">
+              <Image
+                src="/ibtikar-logo.png"
+                alt="IBTIKAR Technologies"
+                width={64}
+                height={64}
+                className="object-contain"
+                priority
+              />
             </div>
+          </div>
 
-            {/* Hero Content */}
-            <div className="space-y-6">
-              <h2 className="text-4xl font-bold text-white leading-tight">
-                Gérez vos références
-                <br />
-                <span className="text-blue-200">en toute simplicité</span>
-              </h2>
-              <p className="text-blue-100 text-lg leading-relaxed">
-                Organisez, suivez et gérez efficacement toutes vos références
-                clients, technologies et projets dans une plateforme centralisée
-                et moderne.
-              </p>
-            </div>
+          <h1 className="text-4xl font-bold mb-4">
+            IBTIKAR
+            <span className="block text-2xl font-normal opacity-90">
+              Technologies
+            </span>
+          </h1>
 
-            {/* Features */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-3 h-3 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span>Gestion centralisée des références</span>
-              </div>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-3 h-3 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span>Interface moderne et intuitive</span>
-              </div>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-3 h-3 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span>Rapports et analytics détaillés</span>
-              </div>
-            </div>
+          <p className="text-xl opacity-90 mb-6">
+            Système de Gestion des Références
+          </p>
+
+          <div className="text-lg opacity-80">
+            <p className="mb-2">🚀 Gestion moderne des projets</p>
+            <p className="mb-2">📊 Suivi des références clients</p>
+            <p className="mb-2">💼 Portfolio d'entreprise</p>
+          </div>
+
+          <div className="mt-8 text-sm opacity-70">
+            <p>🇲🇷 Made in Mauritania</p>
           </div>
         </div>
       </div>
 
-      {/* Right Side - Sign In Form */}
-      <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24 bg-gray-50">
-        <div className="mx-auto w-full max-w-sm lg:w-96">
+      {/* Right side - Login Form */}
+      <div className="lg:flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24 bg-gray-50">
+        <div className="mx-auto w-full max-w-sm">
           {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center justify-center mb-8">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">IB</span>
+          <div className="lg:hidden text-center mb-8">
+            <div className="inline-flex items-center space-x-3">
+              <div className="relative w-12 h-12">
+                <Image
+                  src="/ibtikar-logo.png"
+                  alt="IBTIKAR Technologies"
+                  width={48}
+                  height={48}
+                  className="object-contain"
+                  priority
+                />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">IBTIKAR</h1>
-                <p className="text-gray-500 text-xs">RMS</p>
+                <h2 className="text-2xl font-bold text-gray-900">IBTIKAR</h2>
+                <p className="text-sm text-gray-600">Technologies</p>
               </div>
             </div>
           </div>
 
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Connexion</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+              Connexion
+            </h2>
             <p className="mt-2 text-sm text-gray-600">
               Accédez à votre espace de gestion des références
             </p>
@@ -168,19 +130,28 @@ const SignIn = () => {
           <div className="mt-8">
             <form className="space-y-6" onSubmit={handleSubmit}>
               {error && (
-                <div className="rounded-lg bg-red-50 p-4 border border-red-200">
-                  <div className="text-sm text-red-600">{error}</div>
+                <div className="rounded-lg bg-red-50 border border-red-200 p-4">
+                  <div className="flex">
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        Erreur de connexion
+                      </h3>
+                      <div className="mt-2 text-sm text-red-700">
+                        <p>{error}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Adresse email
                 </label>
-                <div className="relative">
+                <div className="mt-2 relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <UserIcon className="h-5 w-5 text-gray-400" />
                   </div>
@@ -192,8 +163,8 @@ const SignIn = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                    placeholder="votre@email.com"
+                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    placeholder="admin@ibtikar.com"
                   />
                 </div>
               </div>
@@ -201,11 +172,11 @@ const SignIn = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Mot de passe
                 </label>
-                <div className="relative">
+                <div className="mt-2 relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <LockClosedIcon className="h-5 w-5 text-gray-400" />
                   </div>
@@ -217,7 +188,7 @@ const SignIn = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     placeholder="••••••••"
                   />
                   <button
@@ -234,63 +205,48 @@ const SignIn = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-700"
-                  >
-                    Se souvenir de moi
-                  </label>
-                </div>
-
-                <div className="text-sm">
-                  <Link
-                    href="/auth/forgot-password"
-                    className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
-                  >
-                    Mot de passe oublié ?
-                  </Link>
-                </div>
-              </div>
-
               <div>
-                <Button
+                <button
                   type="submit"
-                  disabled={loading}
-                  loading={loading}
-                  className="w-full py-3 text-base font-medium"
-                  size="lg"
+                  disabled={isLoading}
+                  className="flex w-full justify-center rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:from-blue-500 hover:to-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                 >
-                  {loading ? "Connexion en cours..." : "Se connecter"}
-                </Button>
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Connexion...
+                    </div>
+                  ) : (
+                    "Se connecter"
+                  )}
+                </button>
               </div>
             </form>
 
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-gray-50 text-gray-500">
-                    Besoin d'aide ?
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-6 text-center">
-                <p className="text-sm text-gray-600">
-                  Contactez l'administrateur pour obtenir un accès ou en cas de
-                  problème de connexion.
+            {/* Demo credentials */}
+            <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h4 className="text-sm font-medium text-blue-900 mb-2">
+                🔐 Comptes de démonstration :
+              </h4>
+              <div className="text-xs text-blue-700 space-y-1">
+                <p>
+                  <strong>Admin :</strong> admin@ibtikar.com / admin123
+                </p>
+                <p>
+                  <strong>Manager :</strong> manager@ibtikar.com / manager123
+                </p>
+                <p>
+                  <strong>User :</strong> user@ibtikar.com / user123
                 </p>
               </div>
+            </div>
+
+            <div className="mt-6 text-center text-xs text-gray-500">
+              <p>
+                © 2025 IBTIKAR Technologies. Tous droits réservés.
+                <br />
+                🇲🇷 Développé en Mauritanie
+              </p>
             </div>
           </div>
         </div>
@@ -311,8 +267,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const providers = await getProviders();
+
   return {
-    props: {},
+    props: {
+      providers,
+    },
   };
 };
 

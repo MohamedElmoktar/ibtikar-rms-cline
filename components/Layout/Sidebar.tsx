@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   HomeIcon,
   DocumentTextIcon,
@@ -90,17 +91,26 @@ const Sidebar = ({
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         {/* Logo and Title */}
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">IB</span>
+        <Link href="/dashboard" className="flex items-center space-x-3 group">
+          <div className="relative w-10 h-10 flex-shrink-0">
+            <Image
+              src="/ibtikar-logo.png"
+              alt="IBTIKAR Technologies"
+              width={40}
+              height={40}
+              className="rounded-lg object-contain"
+              priority
+            />
           </div>
           {!isCollapsed && (
-            <div>
-              <h1 className="text-lg font-bold text-gray-900">IBTIKAR</h1>
-              <p className="text-xs text-gray-500">RMS</p>
+            <div className="transition-opacity duration-200">
+              <h1 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                IBTIKAR
+              </h1>
+              <p className="text-xs text-gray-500 font-medium">Technologies</p>
             </div>
           )}
-        </div>
+        </Link>
 
         {/* Controls */}
         <div className="flex items-center space-x-1">

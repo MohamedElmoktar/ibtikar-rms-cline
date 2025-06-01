@@ -7,17 +7,17 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.username || !credentials?.password) {
+        if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
         try {
           const user = await authenticateUser(
-            credentials.username,
+            credentials.email,
             credentials.password
           );
           return user;
@@ -43,6 +43,8 @@ export const authOptions: NextAuthOptions = {
         token.role = user.role;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
+        token.name =
+          `${user.firstName} ${user.lastName}`.trim() || user.username;
       }
       return token;
     },
@@ -55,6 +57,7 @@ export const authOptions: NextAuthOptions = {
           role: token.role as string,
           firstName: token.firstName as string,
           lastName: token.lastName as string,
+          name: token.name as string,
         };
       }
       return session;
@@ -65,6 +68,7 @@ export const authOptions: NextAuthOptions = {
     error: "/auth/error",
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === "development",
 };
 
 export default NextAuth(authOptions);
