@@ -1,0 +1,24 @@
+{
+  "title": "البلدان",
+  "subtitle": "إدارة البلدان لمشاريع ابتكار الخاصة بك",
+  "newCountry": "بلد جديد",
+  "editCountry": "تحرير البلد",
+  "countryInfo": "معلومات البلد",
+  "totalCountries": "إجمالي البلدان",
+  "geography": "الجغرافيا العالمية",
+  "form": {
+    "countryName": "اسم البلد",
+    "countryCode": "رمز البلد",
+    "flagEmoji": "رمز العلم",
+    "flagInstruction": "انسخ رمز العلم من لوحة المفاتيح أو موقع ويب",
+    "preview": "معاينة"
+  },
+  "messages": {
+    "noCountries": "لا توجد بلدان",
+    "noCountriesFound": "لم يتم العثور على بلدان",
+    "startAddingCountries": "ابدأ بإضافة البلد الأول.",
+    "noMatchingCountries": "لا توجد بلدان تطابق معاييرك.",
+    "searchPlaceholder": "البحث في البلدان...",
+    "modifyInfo": "تعديل المعلومات لـ"
+  }
+}

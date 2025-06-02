@@ -1,18 +1,17 @@
 import mongoose from "mongoose";
 
-// Extend the global object to include our mongoose cache
-declare global {
-  var mongoose: {
-    conn: any | null;
-    promise: Promise<any> | null;
-  };
-}
-
 const MONGODB_URI = process.env.MONGODB_URI!;
+const MONGODB_DB = process.env.MONGODB_DB!;
 
 if (!MONGODB_URI) {
   throw new Error(
     "Please define the MONGODB_URI environment variable inside .env.local"
+  );
+}
+
+if (!MONGODB_DB) {
+  throw new Error(
+    "Please define the MONGODB_DB environment variable inside .env.local"
   );
 }
 
@@ -21,10 +20,10 @@ if (!MONGODB_URI) {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-let cached = global.mongoose;
+let cached = (global as any).mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
 async function dbConnect() {
@@ -35,16 +34,21 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      family: 4,
+      dbName: MONGODB_DB,
     };
 
     cached.promise = mongoose
       .connect(MONGODB_URI, opts)
       .then((mongoose) => {
-        console.log("MongoDB connected successfully");
+        console.log("✅ Connected to MongoDB Atlas");
         return mongoose;
       })
       .catch((error) => {
-        console.error("MongoDB connection error:", error);
+        console.error("❌ MongoDB connection error:", error);
         throw error;
       });
   }

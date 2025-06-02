@@ -1,8 +1,9 @@
 import { useState, ReactNode, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useTranslation } from "../../lib/hooks/useTranslation";
 import Sidebar from "./Sidebar";
-import Header from "./Header";
+import Header from "./HeaderClean";
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,6 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "IBTIKAR RMS" }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   // Handle responsive sidebar behavior
   useEffect(() => {
@@ -43,9 +45,9 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "IBTIKAR RMS" }) => {
           </div>
           <div className="text-center">
             <h3 className="text-lg font-semibold text-slate-700 mb-2">
-              Chargement...
+              {t("actions.loading")}
             </h3>
-            <p className="text-slate-500">Initialisation de l'application</p>
+            <p className="text-slate-500">{t("messages.success")}</p>
           </div>
         </div>
       </div>
@@ -91,7 +93,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "IBTIKAR RMS" }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <Header />
 
         {/* Page Content */}
         <main className="flex-1 overflow-hidden">

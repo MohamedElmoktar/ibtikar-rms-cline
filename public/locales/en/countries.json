@@ -1,0 +1,24 @@
+{
+  "title": "Countries",
+  "subtitle": "Manage countries for your IBTIKAR projects",
+  "newCountry": "New Country",
+  "editCountry": "Edit Country",
+  "countryInfo": "Country Information",
+  "totalCountries": "Total Countries",
+  "geography": "Global Geography",
+  "form": {
+    "countryName": "Country Name",
+    "countryCode": "Country Code",
+    "flagEmoji": "Flag Emoji",
+    "flagInstruction": "Copy the flag emoji from your keyboard or a website",
+    "preview": "Preview"
+  },
+  "messages": {
+    "noCountries": "No Countries",
+    "noCountriesFound": "No countries found",
+    "startAddingCountries": "Start by adding your first country.",
+    "noMatchingCountries": "No countries match your criteria.",
+    "searchPlaceholder": "Search countries...",
+    "modifyInfo": "Modify information for"
+  }
+}

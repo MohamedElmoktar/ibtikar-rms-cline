@@ -1,422 +1,318 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { trpc } from "../lib/trpc/client";
+import { useRouter } from "next/router";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "../lib/hooks/useTranslation";
 import Layout from "../components/Layout/Layout";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/Card";
-import Button from "../components/ui/Button";
-import {
   DocumentTextIcon,
-  UsersIcon,
   BuildingOfficeIcon,
   CpuChipIcon,
-  ArrowTrendingUpIcon,
-  ClockIcon,
+  GlobeAltIcon,
+  ChartBarIcon,
   EyeIcon,
   PlusIcon,
-  ArrowRightIcon,
 } from "@heroicons/react/24/outline";
-import { cn } from "../lib/utils";
+import { Card } from "../components/ui/Card";
+import Button from "../components/ui/Button";
 
 const Dashboard = () => {
-  const { data: session } = useSession();
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const { t } = useTranslation("dashboard");
+  const { t: tCommon } = useTranslation("common");
+  const [stats, setStats] = useState({
+    references: 0,
+    clients: 0,
+    technologies: 0,
+    countries: 0,
+  });
+  const [recentReferences, setRecentReferences] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch real data using tRPC
-  const { data: referencesData, isLoading: loadingReferences } =
-    trpc.reference.getAll.useQuery({
-      limit: 4,
-      page: 1,
-    });
-
-  const { data: totalReferences = 0 } = trpc.reference.getCount.useQuery();
-  const { data: totalClients = 0 } = trpc.client.getCount.useQuery();
-  const { data: totalTechnologies = 0 } = trpc.technology.getCount.useQuery();
-  const { data: totalCountries = 0 } = trpc.country.getCount.useQuery();
-
-  // Extract references array from the response
-  const references = referencesData?.references || [];
-
-  // Update time every minute
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000);
-    return () => clearInterval(timer);
-  }, []);
+    if (session) {
+      fetchDashboardData();
+    }
+  }, [session]);
 
-  // Calculate stats with real data
-  const stats = [
-    {
-      name: "Total Références",
-      value: totalReferences.toString(),
-      change: "+12%",
-      changeType: "increase",
-      icon: DocumentTextIcon,
-      color: "blue",
-    },
-    {
-      name: "Clients Actifs",
-      value: totalClients.toString(),
-      change: "+5%",
-      changeType: "increase",
-      icon: UsersIcon,
-      color: "green",
-    },
-    {
-      name: "Technologies",
-      value: totalTechnologies.toString(),
-      change: "+8%",
-      changeType: "increase",
-      icon: CpuChipIcon,
-      color: "purple",
-    },
-    {
-      name: "Pays",
-      value: totalCountries.toString(),
-      change: "+2%",
-      changeType: "increase",
-      icon: BuildingOfficeIcon,
-      color: "orange",
-    },
-  ];
+  const fetchDashboardData = async () => {
+    try {
+      // Fetch stats
+      const statsResponse = await fetch("/api/stats");
+      if (statsResponse.ok) {
+        const statsData = await statsResponse.json();
+        setStats(statsData);
+      }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "active":
-        return "bg-green-100 text-green-800";
-      case "completed":
-        return "bg-blue-100 text-blue-800";
-      case "in_progress":
-        return "bg-yellow-100 text-yellow-800";
-      default:
-        return "bg-gray-100 text-gray-800";
+      // Fetch recent references
+      const referencesResponse = await fetch("/api/references?limit=4");
+      if (referencesResponse.ok) {
+        const referencesData = await referencesResponse.json();
+        setRecentReferences(referencesData.references || []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch dashboard data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case "active":
-        return "Actif";
-      case "completed":
-        return "Terminé";
-      case "in_progress":
-        return "En cours";
-      default:
-        return "Inconnu";
-    }
-  };
+  // Redirect if not authenticated
+  if (status === "loading") {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        </div>
+      </Layout>
+    );
+  }
 
-  const getStatColor = (color: string) => {
-    switch (color) {
-      case "blue":
-        return "bg-blue-500";
-      case "green":
-        return "bg-green-500";
-      case "purple":
-        return "bg-purple-500";
-      case "orange":
-        return "bg-orange-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("fr-FR", {
-      style: "currency",
-      currency: "MAD",
-      minimumFractionDigits: 0,
-    }).format(amount);
-  };
+  if (!session) {
+    router.push("/auth/signin");
+    return null;
+  }
 
   return (
     <Layout>
       <div className="space-y-8">
-        {/* Welcome Section */}
-        <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 rounded-2xl p-8 text-white">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold">
-                Bienvenue, {session?.user?.name || "Utilisateur"} 👋
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-8 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold mb-2">
+                {t("welcome")}, {session.user?.firstName}{" "}
+                {session.user?.lastName}!
               </h1>
-              <p className="text-blue-100 text-lg">
-                Voici un aperçu de votre système de gestion des références
-              </p>
-              <div className="flex items-center text-blue-200 text-sm">
-                <ClockIcon className="h-4 w-4 mr-2" />
-                {currentTime.toLocaleDateString("fr-FR", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </div>
+              <p className="text-blue-100 text-lg">{t("overview")}</p>
             </div>
-            <div className="mt-6 sm:mt-0 flex space-x-3">
-              <Button
-                variant="secondary"
-                size="lg"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-              >
-                <EyeIcon className="h-5 w-5 mr-2" />
-                Voir Rapports
-              </Button>
-              <Button
-                variant="secondary"
-                size="lg"
-                className="bg-white text-blue-700 hover:bg-gray-50"
-              >
-                <PlusIcon className="h-5 w-5 mr-2" />
-                Nouvelle Référence
-              </Button>
+            <div className="hidden md:flex items-center space-x-4">
+              <div className="text-right">
+                <p className="text-sm text-blue-200">
+                  {tCommon("time.updatedOn")}
+                </p>
+                <p className="text-white font-medium">
+                  {new Date().toLocaleDateString("fr-FR")}
+                </p>
+              </div>
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                <span className="text-2xl font-bold">
+                  {session.user?.firstName?.[0]}
+                  {session.user?.lastName?.[0]}
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat) => (
-            <Card
-              key={stat.name}
-              className="hover:shadow-lg transition-all duration-200 border-0 shadow-md"
-            >
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-gray-600">
-                      {stat.name}
-                    </p>
-                    <p className="text-3xl font-bold text-gray-900">
-                      {stat.value}
-                    </p>
-                    <div className="flex items-center">
-                      <ArrowTrendingUpIcon className="h-4 w-4 text-green-500 mr-1" />
-                      <span className="text-sm font-medium text-green-600">
-                        {stat.change}
-                      </span>
-                      <span className="text-sm text-gray-500 ml-1">
-                        ce mois
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    className={cn("p-3 rounded-xl", getStatColor(stat.color))}
-                  >
-                    <stat.icon className="h-6 w-6 text-white" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-l-blue-500">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-blue-600 mb-1">
+                  {tCommon("navigation.references")}
+                </p>
+                <p className="text-3xl font-bold text-blue-900">
+                  {loading ? "..." : stats.references}
+                </p>
+                <p className="text-xs text-blue-600 mt-1">
+                  {t("stats.totalReferences")}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+                <DocumentTextIcon className="h-6 w-6 text-white" />
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-100 border-l-4 border-l-green-500">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-green-600 mb-1">
+                  {tCommon("navigation.clients")}
+                </p>
+                <p className="text-3xl font-bold text-green-900">
+                  {loading ? "..." : stats.clients}
+                </p>
+                <p className="text-xs text-green-600 mt-1">
+                  {t("stats.totalClients")}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                <BuildingOfficeIcon className="h-6 w-6 text-white" />
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-l-4 border-l-purple-500">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-purple-600 mb-1">
+                  {tCommon("navigation.technologies")}
+                </p>
+                <p className="text-3xl font-bold text-purple-900">
+                  {loading ? "..." : stats.technologies}
+                </p>
+                <p className="text-xs text-purple-600 mt-1">
+                  {t("stats.totalTechnologies")}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
+                <CpuChipIcon className="h-6 w-6 text-white" />
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6 bg-gradient-to-br from-orange-50 to-orange-100 border-l-4 border-l-orange-500">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-orange-600 mb-1">
+                  {tCommon("navigation.countries")}
+                </p>
+                <p className="text-3xl font-bold text-orange-900">
+                  {loading ? "..." : stats.countries}
+                </p>
+                <p className="text-xs text-orange-600 mt-1">
+                  {t("stats.totalCountries")}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
+                <GlobeAltIcon className="h-6 w-6 text-white" />
+              </div>
+            </div>
+          </Card>
         </div>
 
-        {/* Main Content Grid */}
+        {/* Recent Activity & Quick Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Recent References */}
           <div className="lg:col-span-2">
-            <Card className="shadow-md border-0">
-              <CardHeader className="border-b border-gray-100">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold text-gray-900">
-                    Références Récentes
-                  </CardTitle>
-                  <Button variant="outline" size="sm">
-                    Voir tout
-                    <ArrowRightIcon className="h-4 w-4 ml-2" />
+            <Card className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-gray-900">
+                  {t("stats.recentActivity")}
+                </h2>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => router.push("/references")}
+                >
+                  {tCommon("actions.view")}
+                </Button>
+              </div>
+
+              {loading ? (
+                <div className="space-y-4">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="animate-pulse">
+                      <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                      <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                    </div>
+                  ))}
+                </div>
+              ) : recentReferences.length > 0 ? (
+                <div className="space-y-4">
+                  {recentReferences.map((reference: any) => (
+                    <div
+                      key={reference._id}
+                      className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                      onClick={() =>
+                        router.push(`/references/${reference._id}`)
+                      }
+                    >
+                      <div className="flex items-center space-x-4">
+                        <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                          <DocumentTextIcon className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900">
+                            {reference.title}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            {reference.client?.name} •{" "}
+                            {new Date(reference.createdAt).toLocaleDateString(
+                              "fr-FR"
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                      <EyeIcon className="h-5 w-5 text-gray-400" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <DocumentTextIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-500">{tCommon("messages.noData")}</p>
+                  <Button
+                    onClick={() => router.push("/references/new")}
+                    className="mt-4"
+                  >
+                    <PlusIcon className="h-4 w-4 mr-2" />
+                    {tCommon("actions.create")}
                   </Button>
                 </div>
-              </CardHeader>
-              <CardContent className="p-0">
-                {loadingReferences ? (
-                  <div className="p-6 space-y-4">
-                    {[...Array(4)].map((_, i) => (
-                      <div key={i} className="animate-pulse">
-                        <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                        <div className="h-3 bg-gray-200 rounded w-1/2 mb-2"></div>
-                        <div className="flex space-x-2">
-                          <div className="h-6 bg-gray-200 rounded w-16"></div>
-                          <div className="h-6 bg-gray-200 rounded w-20"></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : references.length === 0 ? (
-                  <div className="p-6 text-center text-gray-500">
-                    <DocumentTextIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                    <p>Aucune référence trouvée</p>
-                    <p className="text-sm">
-                      Commencez par ajouter votre première référence
-                    </p>
-                  </div>
-                ) : (
-                  <div className="divide-y divide-gray-100">
-                    {references.map((reference: any) => (
-                      <div
-                        key={reference._id}
-                        className="p-6 hover:bg-gray-50 transition-colors cursor-pointer"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-sm font-semibold text-gray-900 truncate">
-                              {reference.title}
-                            </h3>
-                            <p className="text-sm text-gray-600 mt-1">
-                              {reference.client?.name || "Client non spécifié"}
-                            </p>
-                            {reference.budget && (
-                              <p className="text-sm text-blue-600 font-medium mt-1">
-                                {formatCurrency(reference.budget)}
-                              </p>
-                            )}
-                            <div className="flex items-center mt-3 space-x-4">
-                              <span
-                                className={cn(
-                                  "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-                                  getStatusColor(reference.status)
-                                )}
-                              >
-                                {getStatusText(reference.status)}
-                              </span>
-                              <span className="text-xs text-gray-500">
-                                {new Date(
-                                  reference.createdAt
-                                ).toLocaleDateString("fr-FR")}
-                              </span>
-                            </div>
-                            {reference.technologies &&
-                              reference.technologies.length > 0 && (
-                                <div className="flex flex-wrap gap-1 mt-2">
-                                  {reference.technologies
-                                    .slice(0, 3)
-                                    .map((tech: any) => (
-                                      <span
-                                        key={tech._id}
-                                        className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700"
-                                      >
-                                        {tech.name}
-                                      </span>
-                                    ))}
-                                  {reference.technologies.length > 3 && (
-                                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
-                                      +{reference.technologies.length - 3}
-                                    </span>
-                                  )}
-                                </div>
-                              )}
-                          </div>
-                          <div className="ml-4">
-                            <EyeIcon className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
+              )}
             </Card>
           </div>
 
-          {/* Quick Actions & Activity */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
-            <Card className="shadow-md border-0">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-gray-900">
-                  Actions Rapides
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+          {/* Quick Actions */}
+          <div>
+            <Card className="p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-6">
+                {t("quickActions.addReference")}
+              </h2>
+              <div className="space-y-4">
                 <Button
-                  className="w-full justify-start"
-                  variant="ghost"
-                  size="lg"
-                  onClick={() => (window.location.href = "/references/new")}
+                  onClick={() => router.push("/references/new")}
+                  className="w-full justify-start bg-blue-600 hover:bg-blue-700"
                 >
-                  <PlusIcon className="h-5 w-5 mr-3" />
-                  Ajouter une référence
+                  <DocumentTextIcon className="h-5 w-5 mr-3" />
+                  {t("quickActions.addReference")}
                 </Button>
                 <Button
+                  onClick={() => router.push("/clients/new")}
+                  variant="outline"
                   className="w-full justify-start"
-                  variant="ghost"
-                  size="lg"
-                  onClick={() => (window.location.href = "/clients")}
-                >
-                  <UsersIcon className="h-5 w-5 mr-3" />
-                  Gérer les clients
-                </Button>
-                <Button
-                  className="w-full justify-start"
-                  variant="ghost"
-                  size="lg"
-                  onClick={() => (window.location.href = "/clients/new")}
                 >
                   <BuildingOfficeIcon className="h-5 w-5 mr-3" />
-                  Ajouter un client
+                  {t("quickActions.addClient")}
                 </Button>
                 <Button
+                  onClick={() => router.push("/clients")}
+                  variant="outline"
                   className="w-full justify-start"
-                  variant="ghost"
-                  size="lg"
-                  onClick={() => (window.location.href = "/technologies")}
+                >
+                  <ChartBarIcon className="h-5 w-5 mr-3" />
+                  {tCommon("actions.view")} {tCommon("navigation.clients")}
+                </Button>
+                <Button
+                  onClick={() => router.push("/settings")}
+                  variant="outline"
+                  className="w-full justify-start"
                 >
                   <CpuChipIcon className="h-5 w-5 mr-3" />
-                  Gérer les technologies
+                  {tCommon("navigation.settings")}
                 </Button>
-              </CardContent>
+              </div>
             </Card>
 
-            {/* System Status */}
-            <Card className="shadow-md border-0">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-gray-900">
-                  État du Système
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Base de données</span>
-                  <div className="flex items-center">
-                    <div className="h-2 w-2 bg-green-500 rounded-full mr-2"></div>
-                    <span className="text-sm font-medium text-green-600">
-                      Actif
-                    </span>
-                  </div>
+            {/* IBTIKAR Branding */}
+            <Card className="p-6 mt-6 bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl mx-auto mb-4 flex items-center justify-center">
+                  <span className="text-white font-bold text-xl">IB</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">API Services</span>
-                  <div className="flex items-center">
-                    <div className="h-2 w-2 bg-green-500 rounded-full mr-2"></div>
-                    <span className="text-sm font-medium text-green-600">
-                      Actif
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Références</span>
-                  <div className="flex items-center">
-                    <div className="h-2 w-2 bg-green-500 rounded-full mr-2"></div>
-                    <span className="text-sm font-medium text-green-600">
-                      {totalReferences} enregistrées
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Dernière sync</span>
-                  <div className="flex items-center">
-                    <div className="h-2 w-2 bg-green-500 rounded-full mr-2"></div>
-                    <span className="text-sm font-medium text-green-600">
-                      Maintenant
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
+                <h3 className="font-bold text-gray-900 mb-2">
+                  {tCommon("branding.company")}
+                </h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  🇲🇷 {tCommon("branding.tagline")}
+                </p>
+                <div className="text-xs text-gray-500">Version 1.0.0 • RMS</div>
+              </div>
             </Card>
           </div>
         </div>
@@ -424,5 +320,13 @@ const Dashboard = () => {
     </Layout>
   );
 };
+
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "dashboard"])),
+    },
+  };
+}
 
 export default Dashboard;

@@ -1,0 +1,36 @@
+{
+  "title": "Clients",
+  "subtitle": "Gérez votre portefeuille clients IBTIKAR",
+  "newClient": "Nouveau client",
+  "editClient": "Modifier le Client",
+  "clientInfo": "Informations du client",
+  "contactInfo": "Contact",
+  "totalClients": "Total Clients",
+  "portfolio": "Portfolio clients de confiance",
+  "industries": {
+    "technology": "Technologie",
+    "ecommerce": "E-commerce",
+    "health": "Santé",
+    "finance": "Finance",
+    "education": "Éducation",
+    "realestate": "Immobilier",
+    "agriculture": "Agriculture",
+    "transport": "Transport",
+    "other": "Autre"
+  },
+  "form": {
+    "fullName": "Nom complet",
+    "selectIndustry": "Sélectionner une industrie",
+    "additionalInfo": "Informations supplémentaires sur le client..."
+  },
+  "messages": {
+    "noClients": "Aucun client",
+    "noClientsFound": "Aucun client trouvé",
+    "startAddingClients": "Commencez par ajouter votre premier client.",
+    "noMatchingClients": "Aucun client ne correspond à vos critères de recherche.",
+    "searchPlaceholder": "Rechercher des clients...",
+    "allIndustries": "Toutes les industries",
+    "modifyInfo": "Modifiez les informations de",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce client ?"
+  }
+}

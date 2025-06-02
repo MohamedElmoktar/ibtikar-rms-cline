@@ -1,0 +1,34 @@
+{
+  "title": "Technologies",
+  "subtitle": "Manage your IBTIKAR technology stack",
+  "newTechnology": "New technology",
+  "editTechnology": "Edit Technology",
+  "techInfo": "Technology information",
+  "totalTechnologies": "Total Technologies",
+  "stack": "Technology stack",
+  "categories": {
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "database": "Database",
+    "mobile": "Mobile",
+    "devops": "DevOps",
+    "design": "Design",
+    "other": "Other"
+  },
+  "form": {
+    "techName": "Technology name",
+    "selectCategory": "Select a category",
+    "version": "Version",
+    "documentation": "Documentation",
+    "techDescription": "Description of the technology and its usage..."
+  },
+  "messages": {
+    "noTechnologies": "No technologies",
+    "noTechnologiesFound": "No technologies found",
+    "startAddingTechnologies": "Start by adding your first technology.",
+    "noMatchingTechnologies": "No technologies match your criteria.",
+    "searchPlaceholder": "Search technologies...",
+    "allCategories": "All categories",
+    "modifyInfo": "Modify information for"
+  }
+}

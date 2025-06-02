@@ -1,0 +1,34 @@
+{
+  "title": "التقنيات",
+  "subtitle": "إدارة مجموعة التقنيات في ابتكار",
+  "newTechnology": "تقنية جديدة",
+  "editTechnology": "تحرير التقنية",
+  "techInfo": "معلومات التقنية",
+  "totalTechnologies": "إجمالي التقنيات",
+  "stack": "مجموعة التقنيات",
+  "categories": {
+    "frontend": "الواجهة الأمامية",
+    "backend": "الخادم الخلفي",
+    "database": "قواعد البيانات",
+    "mobile": "الجوال",
+    "devops": "تطوير العمليات",
+    "design": "التصميم",
+    "other": "أخرى"
+  },
+  "form": {
+    "techName": "اسم التقنية",
+    "selectCategory": "اختر فئة",
+    "version": "الإصدار",
+    "documentation": "التوثيق",
+    "techDescription": "وصف التقنية واستخداماتها..."
+  },
+  "messages": {
+    "noTechnologies": "لا توجد تقنيات",
+    "noTechnologiesFound": "لم يتم العثور على تقنيات",
+    "startAddingTechnologies": "ابدأ بإضافة تقنيتك الأولى.",
+    "noMatchingTechnologies": "لا توجد تقنيات تطابق معاييرك.",
+    "searchPlaceholder": "البحث عن التقنيات...",
+    "allCategories": "جميع الفئات",
+    "modifyInfo": "تعديل معلومات"
+  }
+}

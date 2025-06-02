@@ -1,0 +1,64 @@
+{
+  "navigation": {
+    "dashboard": "لوحة التحكم",
+    "clients": "العملاء",
+    "references": "المراجع",
+    "technologies": "التقنيات",
+    "countries": "البلدان",
+    "companies": "الشركات",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "actions": {
+    "add": "إضافة",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "search": "بحث",
+    "filter": "تصفية",
+    "view": "عرض",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "loading": "جاري التحميل...",
+    "submitting": "جاري الإرسال...",
+    "updating": "جاري التحديث...",
+    "creating": "جاري الإنشاء..."
+  },
+  "form": {
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "company": "الشركة",
+    "industry": "الصناعة",
+    "website": "الموقع الإلكتروني",
+    "address": "العنوان",
+    "description": "الوصف",
+    "required": "مطلوب",
+    "optional": "اختياري"
+  },
+  "messages": {
+    "success": "تمت العملية بنجاح",
+    "error": "حدث خطأ",
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
+    "noData": "لا توجد بيانات متاحة",
+    "notFound": "العنصر غير موجود",
+    "unauthorized": "غير مخول"
+  },
+  "time": {
+    "addedOn": "أضيف في",
+    "updatedOn": "آخر تحديث",
+    "createdAt": "تاريخ الإنشاء"
+  },
+  "branding": {
+    "company": "تقنيات ابتكار",
+    "tagline": "الابتكار التقني من موريتانيا",
+    "mauritania": "موريتانيا"
+  },
+  "user": {
+    "defaultName": "المستخدم",
+    "profile": "الملف الشخصي",
+    "role": "الدور"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "title": "المراجع",
+  "singular": "مرجع",
+  "list": "قائمة المراجع",
+  "add": "إضافة مرجع",
+  "edit": "تحرير المرجع",
+  "view": "عرض المرجع",
+  "fields": {
+    "title": "العنوان",
+    "description": "الوصف",
+    "client": "العميل",
+    "technology": "التقنية",
+    "country": "البلد",
+    "startDate": "تاريخ البداية",
+    "endDate": "تاريخ الانتهاء",
+    "status": "الحالة",
+    "budget": "الميزانية",
+    "teamSize": "حجم الفريق",
+    "projectUrl": "رابط المشروع",
+    "images": "الصور",
+    "documents": "المستندات"
+  },
+  "status": {
+    "planning": "التخطيط",
+    "inProgress": "قيد التنفيذ",
+    "completed": "مكتمل",
+    "onHold": "معلق",
+    "cancelled": "ملغي"
+  },
+  "actions": {
+    "viewDetails": "عرض التفاصيل",
+    "editReference": "تحرير المرجع",
+    "deleteReference": "حذف المرجع",
+    "addImage": "إضافة صورة",
+    "addDocument": "إضافة مستند"
+  },
+  "messages": {
+    "created": "تم إنشاء المرجع بنجاح",
+    "updated": "تم تحديث المرجع بنجاح",
+    "deleted": "تم حذف المرجع بنجاح",
+    "notFound": "المرجع غير موجود",
+    "deleteConfirm": "هل أنت متأكد من حذف هذا المرجع؟",
+    "noReferences": "لا توجد مراجع"
+  }
+}

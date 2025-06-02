@@ -1,0 +1,64 @@
+{
+  "navigation": {
+    "dashboard": "Tableau de bord",
+    "clients": "Clients",
+    "references": "Références",
+    "technologies": "Technologies",
+    "countries": "Pays",
+    "companies": "Entreprises",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
+  },
+  "actions": {
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "view": "Voir",
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "loading": "Chargement...",
+    "submitting": "Envoi en cours...",
+    "updating": "Mise à jour...",
+    "creating": "Création..."
+  },
+  "form": {
+    "name": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "company": "Entreprise",
+    "industry": "Industrie",
+    "website": "Site web",
+    "address": "Adresse",
+    "description": "Description",
+    "required": "Obligatoire",
+    "optional": "Optionnel"
+  },
+  "messages": {
+    "success": "Opération réussie",
+    "error": "Une erreur s'est produite",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+    "noData": "Aucune donnée disponible",
+    "notFound": "Élément non trouvé",
+    "unauthorized": "Non autorisé"
+  },
+  "time": {
+    "addedOn": "Ajouté le",
+    "updatedOn": "Mis à jour le",
+    "createdAt": "Créé le"
+  },
+  "branding": {
+    "company": "IBTIKAR Technologies",
+    "tagline": "Innovation technologique depuis la Mauritanie",
+    "mauritania": "Mauritanie"
+  },
+  "user": {
+    "defaultName": "Utilisateur",
+    "profile": "Profil",
+    "role": "Rôle"
+  }
+}

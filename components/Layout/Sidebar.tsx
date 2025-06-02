@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "../../lib/hooks/useTranslation";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -32,40 +33,41 @@ const Sidebar = ({
 }: SidebarProps) => {
   const router = useRouter();
   const { data: session } = useSession();
+  const { t } = useTranslation("common");
 
   const navigation = [
     {
-      name: "Tableau de bord",
+      name: t("navigation.dashboard"),
       href: "/dashboard",
       icon: HomeIcon,
       current: router.pathname === "/dashboard",
     },
     {
-      name: "Références",
+      name: t("navigation.references"),
       href: "/references",
       icon: DocumentTextIcon,
       current: router.pathname.startsWith("/references"),
     },
     {
-      name: "Clients",
+      name: t("navigation.clients"),
       href: "/clients",
       icon: UsersIcon,
       current: router.pathname.startsWith("/clients"),
     },
     {
-      name: "Entreprises",
+      name: t("navigation.companies"),
       href: "/companies",
       icon: BuildingOfficeIcon,
       current: router.pathname.startsWith("/companies"),
     },
     {
-      name: "Technologies",
+      name: t("navigation.technologies"),
       href: "/technologies",
       icon: CpuChipIcon,
       current: router.pathname.startsWith("/technologies"),
     },
     {
-      name: "Pays",
+      name: t("navigation.countries"),
       href: "/countries",
       icon: GlobeAltIcon,
       current: router.pathname.startsWith("/countries"),
@@ -74,7 +76,7 @@ const Sidebar = ({
 
   const secondaryNavigation = [
     {
-      name: "Paramètres",
+      name: t("navigation.settings"),
       href: "/settings",
       icon: Cog6ToothIcon,
       current: router.pathname.startsWith("/settings"),
@@ -212,7 +214,7 @@ const Sidebar = ({
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
-                  {session?.user?.name || "Utilisateur"}
+                  {session?.user?.name || t("user.defaultName")}
                 </p>
                 <p className="text-xs text-gray-500 truncate">
                   {session?.user?.role || "Admin"}

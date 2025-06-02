@@ -1,0 +1,36 @@
+{
+  "title": "العملاء",
+  "subtitle": "إدارة محفظة عملاء ابتكار",
+  "newClient": "عميل جديد",
+  "editClient": "تحرير العميل",
+  "clientInfo": "معلومات العميل",
+  "contactInfo": "معلومات الاتصال",
+  "totalClients": "إجمالي العملاء",
+  "portfolio": "محفظة عملاء موثوقة",
+  "industries": {
+    "technology": "التكنولوجيا",
+    "ecommerce": "التجارة الإلكترونية",
+    "health": "الصحة",
+    "finance": "المالية",
+    "education": "التعليم",
+    "realestate": "العقارات",
+    "agriculture": "الزراعة",
+    "transport": "النقل",
+    "other": "أخرى"
+  },
+  "form": {
+    "fullName": "الاسم الكامل",
+    "selectIndustry": "اختر صناعة",
+    "additionalInfo": "معلومات إضافية عن العميل..."
+  },
+  "messages": {
+    "noClients": "لا يوجد عملاء",
+    "noClientsFound": "لم يتم العثور على عملاء",
+    "startAddingClients": "ابدأ بإضافة عميلك الأول.",
+    "noMatchingClients": "لا يوجد عملاء يطابقون معايير البحث.",
+    "searchPlaceholder": "البحث عن العملاء...",
+    "allIndustries": "جميع الصناعات",
+    "modifyInfo": "تعديل معلومات",
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العميل؟"
+  }
+}

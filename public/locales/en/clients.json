@@ -1,0 +1,36 @@
+{
+  "title": "Clients",
+  "subtitle": "Manage your IBTIKAR client portfolio",
+  "newClient": "New client",
+  "editClient": "Edit Client",
+  "clientInfo": "Client information",
+  "contactInfo": "Contact",
+  "totalClients": "Total Clients",
+  "portfolio": "Trusted client portfolio",
+  "industries": {
+    "technology": "Technology",
+    "ecommerce": "E-commerce",
+    "health": "Health",
+    "finance": "Finance",
+    "education": "Education",
+    "realestate": "Real Estate",
+    "agriculture": "Agriculture",
+    "transport": "Transport",
+    "other": "Other"
+  },
+  "form": {
+    "fullName": "Full name",
+    "selectIndustry": "Select an industry",
+    "additionalInfo": "Additional information about the client..."
+  },
+  "messages": {
+    "noClients": "No clients",
+    "noClientsFound": "No clients found",
+    "startAddingClients": "Start by adding your first client.",
+    "noMatchingClients": "No clients match your search criteria.",
+    "searchPlaceholder": "Search clients...",
+    "allIndustries": "All industries",
+    "modifyInfo": "Modify information for",
+    "deleteConfirm": "Are you sure you want to delete this client?"
+  }
+}

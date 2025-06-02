@@ -1,0 +1,24 @@
+{
+  "title": "Pays",
+  "subtitle": "Gérez les pays pour vos projets IBTIKAR",
+  "newCountry": "Nouveau pays",
+  "editCountry": "Modifier le Pays",
+  "countryInfo": "Informations du pays",
+  "totalCountries": "Total Pays",
+  "geography": "Géographie mondiale",
+  "form": {
+    "countryName": "Nom du pays",
+    "countryCode": "Code pays",
+    "flagEmoji": "Emoji drapeau",
+    "flagInstruction": "Copiez l'emoji du drapeau depuis votre clavier ou un site web",
+    "preview": "Aperçu"
+  },
+  "messages": {
+    "noCountries": "Aucun pays",
+    "noCountriesFound": "Aucun pays trouvé",
+    "startAddingCountries": "Commencez par ajouter votre premier pays.",
+    "noMatchingCountries": "Aucun pays ne correspond à vos critères.",
+    "searchPlaceholder": "Rechercher des pays...",
+    "modifyInfo": "Modifiez les informations de"
+  }
+}

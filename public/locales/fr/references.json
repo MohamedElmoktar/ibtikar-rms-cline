@@ -1,0 +1,45 @@
+{
+  "title": "Références",
+  "singular": "Référence",
+  "list": "Liste des références",
+  "add": "Ajouter une référence",
+  "edit": "Modifier la référence",
+  "view": "Voir la référence",
+  "fields": {
+    "title": "Titre",
+    "description": "Description",
+    "client": "Client",
+    "technology": "Technologie",
+    "country": "Pays",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "status": "Statut",
+    "budget": "Budget",
+    "teamSize": "Taille de l'équipe",
+    "projectUrl": "URL du projet",
+    "images": "Images",
+    "documents": "Documents"
+  },
+  "status": {
+    "planning": "Planification",
+    "inProgress": "En cours",
+    "completed": "Terminé",
+    "onHold": "En attente",
+    "cancelled": "Annulé"
+  },
+  "actions": {
+    "viewDetails": "Voir les détails",
+    "editReference": "Modifier la référence",
+    "deleteReference": "Supprimer la référence",
+    "addImage": "Ajouter une image",
+    "addDocument": "Ajouter un document"
+  },
+  "messages": {
+    "created": "Référence créée avec succès",
+    "updated": "Référence mise à jour avec succès",
+    "deleted": "Référence supprimée avec succès",
+    "notFound": "Référence non trouvée",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette référence ?",
+    "noReferences": "Aucune référence trouvée"
+  }
+}

@@ -1,12 +1,11 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface ICountry extends Document {
   name: string;
   code: string;
-  continent?: string;
-  isActive: boolean;
-  createdBy: mongoose.Types.ObjectId;
-  updatedBy: mongoose.Types.ObjectId;
+  flag: string;
+  continent: string;
+  currency?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -16,48 +15,34 @@ const CountrySchema = new Schema<ICountry>(
     name: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
-      maxlength: 100,
+      unique: true,
     },
     code: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
       uppercase: true,
-      minlength: 2,
-      maxlength: 3,
+      unique: true,
+    },
+    flag: {
+      type: String,
+      required: true,
     },
     continent: {
       type: String,
+      required: true,
       trim: true,
     },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-    createdBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    updatedBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+    currency: {
+      type: String,
+      trim: true,
     },
   },
   {
     timestamps: true,
   }
 );
-
-// Create indexes
-CountrySchema.index({ name: 1 });
-CountrySchema.index({ code: 1 });
-CountrySchema.index({ isActive: 1 });
-CountrySchema.index({ continent: 1 });
 
 export default mongoose.models.Country ||
   mongoose.model<ICountry>("Country", CountrySchema);

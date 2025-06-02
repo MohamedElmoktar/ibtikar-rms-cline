@@ -1,0 +1,26 @@
+{
+  "title": "Dashboard",
+  "welcome": "Welcome",
+  "overview": "Overview",
+  "stats": {
+    "totalClients": "Total Clients",
+    "totalReferences": "Total References",
+    "totalTechnologies": "Total Technologies",
+    "totalCountries": "Total Countries",
+    "recentActivity": "Recent Activity",
+    "thisMonth": "This Month",
+    "lastMonth": "Last Month",
+    "growth": "Growth"
+  },
+  "charts": {
+    "clientsByCountry": "Clients by Country",
+    "projectsByTechnology": "Projects by Technology",
+    "monthlyGrowth": "Monthly Growth"
+  },
+  "quickActions": {
+    "addClient": "Add Client",
+    "addReference": "Add Reference",
+    "addTechnology": "Add Technology",
+    "addCountry": "Add Country"
+  }
+}

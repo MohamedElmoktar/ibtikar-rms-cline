@@ -1,0 +1,26 @@
+{
+  "title": "لوحة التحكم",
+  "welcome": "مرحباً",
+  "overview": "نظرة عامة",
+  "stats": {
+    "totalClients": "إجمالي العملاء",
+    "totalReferences": "إجمالي المراجع",
+    "totalTechnologies": "إجمالي التقنيات",
+    "totalCountries": "إجمالي البلدان",
+    "recentActivity": "النشاط الأخير",
+    "thisMonth": "هذا الشهر",
+    "lastMonth": "الشهر الماضي",
+    "growth": "النمو"
+  },
+  "charts": {
+    "clientsByCountry": "العملاء حسب البلد",
+    "projectsByTechnology": "المشاريع حسب التقنية",
+    "monthlyGrowth": "النمو الشهري"
+  },
+  "quickActions": {
+    "addClient": "إضافة عميل",
+    "addReference": "إضافة مرجع",
+    "addTechnology": "إضافة تقنية",
+    "addCountry": "إضافة بلد"
+  }
+}

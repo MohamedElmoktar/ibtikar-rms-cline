@@ -1,49 +1,37 @@
-import mongoose, { Document, Schema } from "mongoose";
-
-export interface IDocument {
-  filename: string;
-  originalName: string;
-  mimetype: string;
-  size: number;
-  path: string;
-  uploadedAt: Date;
-}
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IReference extends Document {
   title: string;
   description: string;
   client: mongoose.Types.ObjectId;
-  country: mongoose.Types.ObjectId;
-  location?: string;
-  numberOfEmployees: number;
-  budget?: string;
-  status: "En cours" | "Completed";
-  priority: "High" | "Medium" | "Low";
-  responsible: mongoose.Types.ObjectId;
-  startDate: Date;
-  endDate?: Date;
   technologies: mongoose.Types.ObjectId[];
-  keywords: string[];
-  screenshots: IDocument[];
-  completionCertificate?: IDocument;
-  otherDocuments: IDocument[];
-  isDeleted: boolean;
-  deletedAt?: Date;
-  deletedBy?: mongoose.Types.ObjectId;
+  country: mongoose.Types.ObjectId;
+  status: "Actif" | "Terminé" | "En pause" | "Annulé";
+  startDate?: Date;
+  endDate?: Date;
+  projectUrl?: string;
+  githubUrl?: string;
+  images?: string[];
+  files?: {
+    originalName: string;
+    fileName: string;
+    filePath: string;
+    size: number;
+    mimetype: string;
+    uploadDate: Date;
+  }[];
+  features?: string[];
+  challenges?: string;
+  results?: string;
+  testimonial?: {
+    content: string;
+    author: string;
+    position: string;
+  };
   createdBy: mongoose.Types.ObjectId;
-  updatedBy: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
-
-const DocumentSchema = new Schema<IDocument>({
-  filename: { type: String, required: true },
-  originalName: { type: String, required: true },
-  mimetype: { type: String, required: true },
-  size: { type: Number, required: true },
-  path: { type: String, required: true },
-  uploadedAt: { type: Date, default: Date.now },
-});
 
 const ReferenceSchema = new Schema<IReference>(
   {
@@ -51,7 +39,6 @@ const ReferenceSchema = new Schema<IReference>(
       type: String,
       required: true,
       trim: true,
-      maxlength: 200,
     },
     description: {
       type: String,
@@ -63,78 +50,97 @@ const ReferenceSchema = new Schema<IReference>(
       ref: "Client",
       required: true,
     },
-    country: {
-      type: Schema.Types.ObjectId,
-      ref: "Country",
-      required: true,
-    },
-    location: {
-      type: String,
-      trim: true,
-    },
-    numberOfEmployees: {
-      type: Number,
-      required: true,
-      min: 1,
-    },
-    budget: {
-      type: String,
-      trim: true,
-    },
-    status: {
-      type: String,
-      enum: ["En cours", "Completed"],
-      required: true,
-    },
-    priority: {
-      type: String,
-      enum: ["High", "Medium", "Low"],
-      required: true,
-    },
-    responsible: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    startDate: {
-      type: Date,
-      required: true,
-    },
-    endDate: {
-      type: Date,
-    },
     technologies: [
       {
         type: Schema.Types.ObjectId,
         ref: "Technology",
       },
     ],
-    keywords: [
+    country: {
+      type: Schema.Types.ObjectId,
+      ref: "Country",
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["Actif", "Terminé", "En pause", "Annulé"],
+      default: "Actif",
+    },
+    startDate: {
+      type: Date,
+    },
+    endDate: {
+      type: Date,
+    },
+    projectUrl: {
+      type: String,
+      trim: true,
+    },
+    githubUrl: {
+      type: String,
+      trim: true,
+    },
+    images: [
       {
+        type: String,
+      },
+    ],
+    files: [
+      {
+        originalName: {
+          type: String,
+          required: true,
+        },
+        fileName: {
+          type: String,
+          required: true,
+        },
+        filePath: {
+          type: String,
+          required: true,
+        },
+        size: {
+          type: Number,
+          required: true,
+        },
+        mimetype: {
+          type: String,
+          required: true,
+        },
+        uploadDate: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    features: [
+      {
+        type: String,
+      },
+    ],
+    challenges: {
+      type: String,
+      trim: true,
+    },
+    results: {
+      type: String,
+      trim: true,
+    },
+    testimonial: {
+      content: {
         type: String,
         trim: true,
       },
-    ],
-    screenshots: [DocumentSchema],
-    completionCertificate: DocumentSchema,
-    otherDocuments: [DocumentSchema],
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
-    deletedAt: {
-      type: Date,
-    },
-    deletedBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      author: {
+        type: String,
+        trim: true,
+      },
+      position: {
+        type: String,
+        trim: true,
+      },
     },
     createdBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    updatedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -144,44 +150,6 @@ const ReferenceSchema = new Schema<IReference>(
     timestamps: true,
   }
 );
-
-// Create indexes for better query performance
-ReferenceSchema.index({ title: "text", description: "text", keywords: "text" });
-ReferenceSchema.index({ client: 1 });
-ReferenceSchema.index({ country: 1 });
-ReferenceSchema.index({ status: 1 });
-ReferenceSchema.index({ priority: 1 });
-ReferenceSchema.index({ responsible: 1 });
-ReferenceSchema.index({ startDate: -1 });
-ReferenceSchema.index({ endDate: -1 });
-ReferenceSchema.index({ technologies: 1 });
-ReferenceSchema.index({ isDeleted: 1 });
-ReferenceSchema.index({ createdAt: -1 });
-
-// Virtual for full name
-ReferenceSchema.virtual("clientName", {
-  ref: "Client",
-  localField: "client",
-  foreignField: "_id",
-  justOne: true,
-});
-
-ReferenceSchema.virtual("countryName", {
-  ref: "Country",
-  localField: "country",
-  foreignField: "_id",
-  justOne: true,
-});
-
-ReferenceSchema.virtual("responsibleName", {
-  ref: "User",
-  localField: "responsible",
-  foreignField: "_id",
-  justOne: true,
-});
-
-// Ensure virtual fields are serialized
-ReferenceSchema.set("toJSON", { virtuals: true });
 
 export default mongoose.models.Reference ||
   mongoose.model<IReference>("Reference", ReferenceSchema);

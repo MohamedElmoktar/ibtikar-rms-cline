@@ -1,0 +1,26 @@
+{
+  "title": "Tableau de bord",
+  "welcome": "Bienvenue",
+  "overview": "Aperçu",
+  "stats": {
+    "totalClients": "Total des clients",
+    "totalReferences": "Total des références",
+    "totalTechnologies": "Total des technologies",
+    "totalCountries": "Total des pays",
+    "recentActivity": "Activité récente",
+    "thisMonth": "Ce mois-ci",
+    "lastMonth": "Le mois dernier",
+    "growth": "Croissance"
+  },
+  "charts": {
+    "clientsByCountry": "Clients par pays",
+    "projectsByTechnology": "Projets par technologie",
+    "monthlyGrowth": "Croissance mensuelle"
+  },
+  "quickActions": {
+    "addClient": "Ajouter un client",
+    "addReference": "Ajouter une référence",
+    "addTechnology": "Ajouter une technologie",
+    "addCountry": "Ajouter un pays"
+  }
+}
