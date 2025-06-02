@@ -1,7 +1,4 @@
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-
-// Import all translation files
+// Import all translation files directly
 import commonEn from "../public/locales/en/common.json";
 import commonFr from "../public/locales/fr/common.json";
 import commonAr from "../public/locales/ar/common.json";
@@ -30,7 +27,7 @@ import authEn from "../public/locales/en/auth.json";
 import authFr from "../public/locales/fr/auth.json";
 import authAr from "../public/locales/ar/auth.json";
 
-const resources = {
+export const translations = {
   en: {
     common: commonEn,
     dashboard: dashboardEn,
@@ -60,28 +57,31 @@ const resources = {
   },
 };
 
-if (!i18n.isInitialized) {
-  i18n.use(initReactI18next).init({
-    resources,
-    lng: "fr",
-    fallbackLng: "fr",
-    defaultNS: "common",
-    ns: [
-      "common",
-      "dashboard",
-      "clients",
-      "references",
-      "technologies",
-      "countries",
-      "auth",
-    ],
-    interpolation: {
-      escapeValue: false,
-    },
-    react: {
-      useSuspense: false,
-    },
-  });
-}
+export type Locale = keyof typeof translations;
+export type Namespace = keyof typeof translations.en;
 
-export default i18n;
+// Simple translation function
+export function translate(
+  locale: Locale,
+  namespace: Namespace,
+  key: string
+): string {
+  const keys = key.split(".");
+  let value: any = translations[locale]?.[namespace];
+
+  for (const k of keys) {
+    if (value && typeof value === "object") {
+      value = value[k];
+    } else {
+      break;
+    }
+  }
+
+  // Fallback to French if translation not found
+  if (typeof value !== "string" && locale !== "fr") {
+    return translate("fr", namespace, key);
+  }
+
+  // Return key if no translation found
+  return typeof value === "string" ? value : key;
+}

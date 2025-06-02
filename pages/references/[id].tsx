@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Layout from "../../components/Layout/Layout";
 import {
   ArrowLeftIcon,
@@ -497,12 +496,5 @@ const ViewReferencePage = () => {
   );
 };
 
-export async function getServerSideProps({ locale }: { locale: string }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common", "references"])),
-    },
-  };
-}
 
 export default ViewReferencePage;

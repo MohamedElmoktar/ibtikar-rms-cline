@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Layout from "../../components/Layout/Layout";
 import {
   PlusIcon,
@@ -250,12 +249,5 @@ const CountriesPage = () => {
   );
 };
 
-export async function getStaticProps({ locale }: { locale: string }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common", "countries"])),
-    },
-  };
-}
 
 export default CountriesPage;
