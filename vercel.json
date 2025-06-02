@@ -3,10 +3,5 @@
     "env": {
       "NEXT_I18NEXT_DEBUG": "false"
     }
-  },
-  "functions": {
-    "pages/api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
   }
 }
