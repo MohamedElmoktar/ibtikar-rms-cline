@@ -1,8 +1,7 @@
 {
-  "version": 1,
   "functions": {
     "pages/api/**/*.ts": {
-      "runtime": "nodejs20.x"
+      "runtime": "nodejs18.x"
     }
   },
   "build": {
