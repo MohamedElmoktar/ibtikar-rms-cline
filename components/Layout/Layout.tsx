@@ -93,7 +93,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "IBTIKAR RMS" }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <Header />
+        <Header onSidebarToggle={() => setSidebarOpen(true)} />
 
         {/* Page Content */}
         <main className="flex-1 overflow-hidden">
