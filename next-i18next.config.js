@@ -9,7 +9,7 @@ module.exports = {
     ar: ["fr"],
     en: ["fr"],
   },
-  debug: process.env.NODE_ENV === "development",
+  debug: false,
   reloadOnPrerender: process.env.NODE_ENV === "development",
   localePath: "./public/locales",
   ns: [

@@ -1,0 +1,12 @@
+{
+  "functions": {
+    "pages/api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "build": {
+    "env": {
+      "NEXT_I18NEXT_DEBUG": "false"
+    }
+  }
+}

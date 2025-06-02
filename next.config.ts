@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-const { i18n } = require("./next-i18next.config");
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -9,7 +8,11 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  i18n,
+  i18n: {
+    defaultLocale: "fr",
+    locales: ["ar", "fr", "en"],
+    localeDetection: false,
+  },
 };
 
 export default nextConfig;
