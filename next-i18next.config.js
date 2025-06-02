@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = {
   i18n: {
     defaultLocale: "fr",
@@ -9,9 +11,9 @@ module.exports = {
     ar: ["fr"],
     en: ["fr"],
   },
-  debug: false,
+  debug: process.env.NODE_ENV === "development",
   reloadOnPrerender: process.env.NODE_ENV === "development",
-  localePath: "./public/locales",
+  localePath: path.resolve("./public/locales"),
   ns: [
     "common",
     "dashboard",
@@ -22,6 +24,10 @@ module.exports = {
     "auth",
   ],
   defaultNS: "common",
-  serializeConfig: false,
-  use: [],
+  interpolation: {
+    escapeValue: false,
+  },
+  react: {
+    useSuspense: false,
+  },
 };

@@ -1,2 +1,2 @@
-// Re-export the useTranslation hook from next-i18next for consistency
-export { useTranslation } from "next-i18next";
+// Re-export the useTranslation hook from react-i18next for consistency
+export { useTranslation } from "react-i18next";
